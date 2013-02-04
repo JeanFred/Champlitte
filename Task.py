@@ -3,15 +3,23 @@
 """Partnership with the Champlitte museum − main task process."""
 
 import sys
-from RecordsProcessing import RecordsProcessing
+sys.path.append('../MassUploadLibrary')
+from Champlitte import ChamplitteMetadataCollection, ChamplitteRecord
+from uploadlibrary import PostProcessing
 
 
 def main(index):
     """Main method."""
-    processor = RecordsProcessing()
+    processor = ChamplitteMetadataCollection()
     csv_file = 'DV5_M0354_2003_3.csv'
     processor.retrieve_metadata_from_csv(csv_file)
-    #processor.print_metadata_of_record(index)
+
+    mapping = {
+        'JOCONDE_DIMS': PostProcessing.process_DIMS,
+    }
+    processor.post_process_collection(mapping)
+
+    processor.print_metadata_of_record(index)
     #for record in processor.records:
         #print record.get_title()
     #print "\n".join(["%s %s" % x for x in parser.records[0].__dict__.items()])
