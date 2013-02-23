@@ -8,7 +8,10 @@ from setuptools import setup
 setup(name='Champlitte',
     version      = '0.1',
     description  = 'Managing the Champlitte mass-upload to Wikimedia Commons.',
-    py_modules = ['Record', 'RecordsProcessing', 'Task', 'UnicodeCSV'],
     author       = 'Jean-Frederic',
     author_email = 'JeanFred@github',
-    license      = 'GPL')
+    packages     = [''],
+    license      = 'GPL',
+    install_requires = ['MassUploadLibrary'],
+    dependency_links = ['https://github.com/JeanFred/MassUploadLibrary/archive/master.tar.gz#egg=MassUploadLibrary'],
+    )
