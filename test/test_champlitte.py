@@ -6,12 +6,11 @@
 import unittest
 import pickle
 from os.path import join, dirname
-from Record import Record
-
+from Champlitte import ChamplitteRecord
 
 class TestRecord(unittest.TestCase):
 
-    """Testing methods from Record."""
+    """Testing methods from ChamplitteRecord."""
 
     @classmethod
     def setUpClass(cls):
@@ -20,13 +19,13 @@ class TestRecord(unittest.TestCase):
         func = lambda x: pickle.load(open(join(dirname(__file__), 'data', x)))
         cls.records = map(func, record_files)
         values = {'INV': 'inv', 'JOCONDE_TITR': 'joconde_titr'}
-        dummy_record = Record(**values)
+        dummy_record = ChamplitteRecord(**values)
         cls.records.append(dummy_record)
 
     def test_init(self):
         """Test __init__."""
         values = {'A': 'a'}
-        record = Record(**values)
+        record = ChamplitteRecord(**values)
         self.assertEqual(record.__dict__, values)
 
     def test_get_title(self):
@@ -34,7 +33,7 @@ class TestRecord(unittest.TestCase):
         expected_result = ['personnage militaire - 1951.3.16 (a) - CG70',
                            'joconde_titr - inv - CG70']
         self.assertListEqual(expected_result,
-                             map(Record.get_title, self.records))
+                             map(ChamplitteRecord.get_title, self.records))
 
     def test_to_template(self):
         """Test to_template."""
