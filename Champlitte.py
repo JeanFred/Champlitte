@@ -45,20 +45,25 @@ def main(args):
                                                                alignment_template)
 
         mapping_methods = {
-                'JOCONDE_DIMS': (commonprocessors.process_DIMS, {}),
-                }
-        reader = collection.post_process_collection(mapping_methods)
+            'JOCONDE_TECH': commonprocessors.map_and_apply_technique(separator=";"),
+            'JOCONDE_DIMS': (commonprocessors.process_DIMS, {}),
+        }
+        categories_counter, categories_count_per_file = collection.post_process_collection(mapping_methods)
+        # metadata.categorisation_statistics(categories_counter, categories_count_per_file)
 
-        template_name = 'User:Jean-Frédéric/Champlitte/Ingestion'.encode('utf-8')
-        front_titlefmt = ""
-        #variable_titlefmt = "%(JOCONDE_TITR)s (%(JOCONDE_DENO)s)"
-        variable_titlefmt = "%(JOCONDE_DENO)s"
-        rear_titlefmt = " - Musées de la Haute-Saône - %(Actimuse::_REF Export)s"
-        uploadBot = DataIngestionBot(reader=reader,
-                                     front_titlefmt=front_titlefmt,
-                                     rear_titlefmt=rear_titlefmt,
-                                     variable_titlefmt=variable_titlefmt,
-                                     pagefmt=template_name)
+    template_name = 'User:Jean-Frédéric/Champlitte/Ingestion'.encode('utf-8')
+    front_titlefmt = ""
+    #variable_titlefmt = "%(JOCONDE_TITR)s (%(JOCONDE_DENO)s)"
+    variable_titlefmt = "%(JOCONDE_DENO)s"
+    rear_titlefmt = " - Musées de la Haute-Saône - %(Actimuse::_REF Export)s"
+    reader = iter(collection.records)
+    uploadBot = DataIngestionBot(reader=reader,
+                                 front_titlefmt=front_titlefmt,
+                                 rear_titlefmt=rear_titlefmt,
+                                 variable_titlefmt=variable_titlefmt,
+                                 pagefmt=template_name,
+                                 subst=False,
+                                 verifyDescription=True)
     if args.upload:
         uploadBot.doSingle()
     elif args.dry_run:
