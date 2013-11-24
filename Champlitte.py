@@ -24,7 +24,7 @@ class ChamplitteMetadataCollection(metadata.MetadataCollection):
         joconde = dict(zip(["JOCONDE_%s" % x for x in joconde_field[0::2]],
                             joconde_field[1::2]))
         row.update(joconde)
-        return metadata.MetadataRecord("", row)
+        return metadata.MetadataRecord(".jpg", row)
 
 
 def main(args):
