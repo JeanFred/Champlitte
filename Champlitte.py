@@ -73,4 +73,7 @@ def main(args):
 if __name__ == "__main__":
     parser = UploadBotArgumentParser()
     arguments = parser.parse_args()
-    main(arguments)
+    if not any(arguments.__dict__.values()):
+        parser.print_help()
+    else:
+        main(arguments)
