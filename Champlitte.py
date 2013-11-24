@@ -4,17 +4,16 @@
 
 __authors__ = 'User:Jean-Frédéric'
 
-
 import sys
 from uploadlibrary import metadata
 import uploadlibrary.PostProcessing as commonprocessors
 from uploadlibrary.UploadBot import DataIngestionBot, UploadBotArgumentParser
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
 class ChamplitteMetadataCollection(metadata.MetadataCollection):
-
     """Processing a collection of Records in various ways."""
 
     def handle_record(self, row):
@@ -22,7 +21,7 @@ class ChamplitteMetadataCollection(metadata.MetadataCollection):
 
         joconde_field = row.pop('Actimuse::_Export_Global DMF').split('\n')
         joconde = dict(zip(["JOCONDE_%s" % x for x in joconde_field[0::2]],
-                            joconde_field[1::2]))
+                           joconde_field[1::2]))
         row.update(joconde)
         return metadata.MetadataRecord(".jpg", row)
 
@@ -34,16 +33,17 @@ def main(args):
     collection.retrieve_metadata_from_csv(csv_file)
 
     alignment_template = 'User:Jean-Frédéric/AlignmentRow'.encode('utf-8')
+
     if args.prepare_alignment:
         for key, value in collection.count_metadata_values().items():
             collection.write_dict_as_wiki(value, key, 'wiki',
                                           alignment_template)
 
-
     if args.post_process:
         mapping_fields = []
         mapper = commonprocessors.retrieve_metadata_alignments(mapping_fields,
-                                                    alignment_template)
+                                                               alignment_template)
+
         mapping_methods = {
                 'JOCONDE_DIMS': (commonprocessors.process_DIMS, {}),
                 }
