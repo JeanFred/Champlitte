@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Partnership with the Champlitte museum."""
+from StringIO import StringIO
 
 __authors__ = 'User:Jean-Frédéric'
 
@@ -45,8 +46,9 @@ def main(args):
                                                                alignment_template)
 
         mapping_methods = {
-            'JOCONDE_TECH': commonprocessors.map_and_apply_technique(separator=";"),
+            #'JOCONDE_TECH': commonprocessors.map_and_apply_technique(separator=";"),
             'JOCONDE_DIMS': (commonprocessors.process_DIMS, {}),
+            'JOCONDE_DOMN': commonprocessors.split_and_keep_as_list(separator=';'),
         }
         categories_counter, categories_count_per_file = collection.post_process_collection(mapping_methods)
         # metadata.categorisation_statistics(categories_counter, categories_count_per_file)
@@ -57,6 +59,9 @@ def main(args):
     variable_titlefmt = "%(JOCONDE_DENO)s"
     rear_titlefmt = " - Musées de la Haute-Saône - %(Actimuse::_REF Export)s"
     reader = iter(collection.records)
+    string = StringIO()
+    collection.write_metadata_to_xml(string)
+    print string.getvalue()
     uploadBot = DataIngestionBot(reader=reader,
                                  front_titlefmt=front_titlefmt,
                                  rear_titlefmt=rear_titlefmt,
