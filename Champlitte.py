@@ -19,19 +19,24 @@ class ChamplitteMetadataCollection(metadata.MetadataCollection):
 
     def handle_record(self, row):
         """Handle a record."""
-
         joconde_field = row.pop('Actimuse::_Export_Global DMF').split('\n')
         joconde = dict(zip(["JOCONDE_%s" % x for x in joconde_field[0::2]],
                            joconde_field[1::2]))
         row.update(joconde)
-        return metadata.MetadataRecord(".jpg", row)
+        url = self.make_url(row.get('Support'), row.get('Cote'))
+        return metadata.MetadataRecord(url, row)
 
+    @staticmethod
+    def make_url(support, cote):
+        base_url = ''
+        return "%s/%s/%s.jpg" % (base_url, support, cote)
 
 def main(args):
     """Main method."""
     collection = ChamplitteMetadataCollection()
-    csv_file = 'DV5_M0354_2003_3.csv'
-    collection.retrieve_metadata_from_csv(csv_file)
+    csv_file = 'DV5_M0354_2006_9.csv'
+#    csv_file = '2006_1.csv'
+    collection.retrieve_metadata_from_csv(csv_file, delimiter=';')
 
     alignment_template = 'User:Jean-Frédéric/AlignmentRow'.encode('utf-8')
 
