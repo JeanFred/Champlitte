@@ -28,8 +28,8 @@ class ChamplitteMetadataCollection(metadata.MetadataCollection):
 
     @staticmethod
     def make_url(support, cote):
-        base_url = ''
-        return "%s/%s/%s.jpg" % (base_url, support, cote)
+        base_url = 'http://musees.cg70.fr/wikimedia/2006'
+        return "%s/%s/%s_tif/%s.tif" % (base_url, support, support, cote)
 
 def main(args):
     """Main method."""
