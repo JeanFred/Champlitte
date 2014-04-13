@@ -57,6 +57,7 @@ def main(args):
             'JOCONDE_DESC': commonprocessors.wrap_with_template(template='fr'),
             'JOCONDE_REF': commonprocessors.wrap_within_pattern(pattern='{{online databases|{{Joconde|%s}}}}'),
             'JOCONDE_DACQ': commonprocessors.wrap_within_pattern(pattern='{{ProvenanceEvent|time=%s|type=acquisition|newowner=Musées de la Haute-Saône}}'),
+            'JOCONDE_PERI': (commonprocessors.look_for_date, {})
 
         }
         categories_counter, categories_count_per_file = collection.post_process_collection(mapping_methods)
