@@ -34,9 +34,9 @@ class ChamplitteMetadataCollection(metadata.MetadataCollection):
 def main(args):
     """Main method."""
     collection = ChamplitteMetadataCollection()
-    csv_file = 'DV5_M0354_2006_9.csv'
-#    csv_file = '2006_1.csv'
-    collection.retrieve_metadata_from_csv(csv_file, delimiter=';')
+#    csv_file = 'DV5_M0354_2006_9.csv'
+    csv_file = '2006_7.csv'
+    collection.retrieve_metadata_from_csv(csv_file, delimiter=',')
 
     alignment_template = 'User:Jean-Frédéric/AlignmentRow'.encode('utf-8')
 
@@ -54,6 +54,10 @@ def main(args):
             #'JOCONDE_TECH': commonprocessors.map_and_apply_technique(separator=";"),
             'JOCONDE_DIMS': (commonprocessors.process_DIMS, {}),
             'JOCONDE_DOMN': commonprocessors.split_and_keep_as_list(separator=';'),
+            'JOCONDE_DESC': commonprocessors.wrap_with_template(template='fr'),
+            'JOCONDE_REF': commonprocessors.wrap_within_pattern(pattern='{{online databases|{{Joconde|%s}}}}'),
+            'JOCONDE_DACQ': commonprocessors.wrap_within_pattern(pattern='{{ProvenanceEvent|time=%s|type=acquisition|newowner=Musées de la Haute-Saône}}'),
+
         }
         categories_counter, categories_count_per_file = collection.post_process_collection(mapping_methods)
         # metadata.categorisation_statistics(categories_counter, categories_count_per_file)
@@ -62,7 +66,7 @@ def main(args):
     front_titlefmt = ""
     #variable_titlefmt = "%(JOCONDE_TITR)s (%(JOCONDE_DENO)s)"
     variable_titlefmt = "%(JOCONDE_DENO)s"
-    rear_titlefmt = " - Musées de la Haute-Saône - %(Actimuse::_REF Export)s"
+    rear_titlefmt = " - Musées de la Haute-Saône - %(JOCONDE_REF)s"
     reader = iter(collection.records)
     string = StringIO()
     collection.write_metadata_to_xml(string)
